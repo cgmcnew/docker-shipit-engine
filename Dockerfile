@@ -6,23 +6,25 @@ RUN apk add --no-cache --update \
     postgresql-client \
     tzdata \
     yarn \
+    shared-mime-info \
     && apk add --no-cache --virtual .build-deps \
       build-base \
       postgresql-dev \
       sqlite-dev
 
 ENV CI=true
-ENV SHIPIT_VERSION=v0.28.1
+ENV SHIPIT_VERSION=v0.33.0
 
 RUN git config --global user.email "you@example.com"
 RUN git config --global user.name "Your Name"
 
-RUN gem install rails -v 5.2 --no-document
+RUN gem install mimemagic
+RUN gem install rails -v 6.0 --no-document
 RUN gem install minitest --no-document
 
 WORKDIR /usr/src
 
-RUN rails _5.2_ new shipit \
+RUN rails _6.0_ new shipit \
   --skip-action-cable --skip-turbolinks --skip-action-mailer --skip-active-storage \
   -m https://raw.githubusercontent.com/Shopify/shipit-engine/${SHIPIT_VERSION}/template.rb
 

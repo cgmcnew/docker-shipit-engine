@@ -1,13 +1,17 @@
 version: '3'
 services:
-  postgres:
+  postgresql:
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
-    image: postgres:11-alpine
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    image: postgres
     ports:
       - 5432
     volumes:
       - .compose-data/postgresql:/var/lib/postgresql/data/pgdata
+
   redis:
     command: redis-server --appendonly yes
     image: redis:5-alpine
@@ -15,27 +19,29 @@ services:
       - 6379
     volumes:
       - .compose-data/redis:/data
+
   app:
     build: .
     depends_on:
-      - postgres
+      - postgresql
       - redis
     environment:
-      - DATABASE_URL=postgres://postgres:@postgres:5432
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgres://postgres:password@postgresql:5432
+      - REDIS_URL=redis://172.13.10.2:6379
       - SECRET_KEY_BASE=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: on-failure
     volumes:
       - ${PWD}/config/secrets.yml:/usr/src/shipit/config/secrets.yml:ro
     ports:
       - 3000:3000
+
   worker:
     build: .
     depends_on:
-      - postgres
+      - postgresql
       - redis
     environment:
-      - DATABASE_URL=postgres://postgres:@postgres:5432
+      - DATABASE_URL=postgres://postgres:password@postgresql:5432
       - REDIS_URL=redis://redis:6379
       - SECRET_KEY_BASE=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: on-failure
