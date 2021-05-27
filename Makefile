@@ -22,3 +22,6 @@ setup:
 
 upgrade:
 	docker-compose run app upgrade
+
+restart: stop
+restart: start
