@@ -12,7 +12,7 @@ services:
     volumes:
       - .compose-data/postgresql:/var/lib/postgresql/data/pgdata
 
-  redis:
+  redis-server:
     command: redis-server --appendonly yes
     image: redis:5-alpine
     ports:
@@ -24,10 +24,10 @@ services:
     build: .
     depends_on:
       - postgresql
-      - redis
+      - redis-server
     environment:
       - DATABASE_URL=postgres://postgres:password@postgresql:5432
-      - REDIS_URL=redis://172.13.10.2:6379
+      - REDIS_URL=redis://redis-server:6379
       - SECRET_KEY_BASE=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: on-failure
     volumes:
@@ -39,10 +39,10 @@ services:
     build: .
     depends_on:
       - postgresql
-      - redis
+      - redis-server
     environment:
       - DATABASE_URL=postgres://postgres:password@postgresql:5432
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis://redis-server:6379
       - SECRET_KEY_BASE=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     restart: on-failure
     volumes:
