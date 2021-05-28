@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   postgresql:
     environment:
@@ -11,6 +11,11 @@ services:
       - 5432
     volumes:
       - .compose-data/postgresql:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis-server:
     command: redis-server --appendonly yes
@@ -23,8 +28,10 @@ services:
   app:
     build: .
     depends_on:
-      - postgresql
-      - redis-server
+      postgresql:
+        condition: service_healthy
+      redis-server:
+        condition: service_started
     environment:
       - DATABASE_URL=postgres://postgres:password@postgresql:5432
       - REDIS_URL=redis://redis-server:6379
@@ -38,8 +45,10 @@ services:
   worker:
     build: .
     depends_on:
-      - postgresql
-      - redis-server
+      postgresql:
+        condition: service_healthy
+      redis-server:
+        condition: service_started
     environment:
       - DATABASE_URL=postgres://postgres:password@postgresql:5432
       - REDIS_URL=redis://redis-server:6379
