@@ -6,11 +6,11 @@ RUN apk add --no-cache --update \
     postgresql-client \
     tzdata \
     yarn \
-    shared-mime-info \
-    && apk add --no-cache --virtual .build-deps \
-      build-base \
-      postgresql-dev \
-      sqlite-dev
+    shared-mime-info
+RUN apk add --no-cache --virtual .build-deps \
+    build-base \
+    postgresql-dev \
+    sqlite-dev
 
 ENV CI=true
 ENV SHIPIT_VERSION=v0.33.0

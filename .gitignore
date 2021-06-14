@@ -1,3 +1,4 @@
 .compose-data/**/*
 .env
 config/secrets.yml
+.DS_Store
