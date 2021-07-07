@@ -39,6 +39,7 @@ services:
     restart: on-failure
     volumes:
       - ${PWD}/config/secrets.yml:/usr/src/shipit/config/secrets.yml:ro
+      - ${PWD}/config/shipit.yml:/usr/src/shipit/config/shipit.yml:ro
     ports:
       - 3000:3000
 
@@ -56,4 +57,5 @@ services:
     restart: on-failure
     volumes:
       - ${PWD}/config/secrets.yml:/usr/src/shipit/config/secrets.yml:ro
+      - ${PWD}/config/shipit.yml:/usr/src/shipit/config/shipit.yml:ro
     command: bundle exec sidekiq -C config/sidekiq.yml
