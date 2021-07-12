@@ -5,7 +5,7 @@ Docker image for https://github.com/Shopify/shipit-engine
 ## Running via Docker Compose
 
 * Create `config/secrets.yml` based off of `config/secrets.example.yml` and fill in your GitHub App's info
-* Create `config/shipit.yml` based off of `config/shipit.example.yml` and make the desired changes/configurations
+* Create `shipit.yml` based off of `shipit.example.yml` and make the desired changes/configurations
 * Run `make start` to start an instance. To stop it, run: `make stop`.
 
 ## Database Management
