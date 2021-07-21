@@ -40,6 +40,8 @@ services:
     volumes:
       - ${PWD}/config/secrets.yml:/usr/src/shipit/config/secrets.yml:ro
       - ${PWD}/config/shipit.yml:/usr/src/shipit/shipit.yml:ro
+      - ${PWD}/scripts/deploy.sh:/usr/src/shipit/scripts/deploy.sh:ro
+      - ${PWD}/scripts/revert.sh:/usr/src/shipit/scripts/revert.sh:ro
     ports:
       - 3000:3000
 
@@ -58,4 +60,6 @@ services:
     volumes:
       - ${PWD}/config/secrets.yml:/usr/src/shipit/config/secrets.yml:ro
       - ${PWD}/config/shipit.yml:/usr/src/shipit/shipit.yml:ro
+      - ${PWD}/scripts/deploy.sh:/usr/src/shipit/scripts/deploy.sh:ro
+      - ${PWD}/scripts/revert.sh:/usr/src/shipit/scripts/revert.sh:ro
     command: bundle exec sidekiq -C config/sidekiq.yml
