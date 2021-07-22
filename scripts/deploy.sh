@@ -1,1 +1,3 @@
-﻿echo Deployment Script is running - with nothing
+﻿#!/bin/bash
+
+echo Deployment Script is running - with nothing

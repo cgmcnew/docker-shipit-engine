@@ -30,6 +30,8 @@ RUN rails _6.0_ new shipit \
 
 RUN apk del .build-deps
 
+RUN apk add bash
+
 WORKDIR /usr/src/shipit
 
 COPY config/ config/
